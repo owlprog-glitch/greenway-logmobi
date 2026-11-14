@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GreenWay LogMobi | Sistema Integrado de Logística Sustentável</title>
+    <!-- Tailwind CSS via CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts: Inter & JetBrains Mono -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome 6 -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        mono: ['JetBrains Mono', 'monospace'],
+                    },
+                    colors: {
+                        gw: {
+                            teal: '#0D9488',
+                            turquoise: '#14B8A6',
+                            dark: '#0F172A',
+                            slate: '#1E293B',
+                            norte: '#8B5CF6',   // Violeta
+                            sul: '#84CC16',     // Verde-Limão
+                            centro: '#06B6D4',  // Ciano
+                            leste: '#F97316',   // Laranja
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        /* Animações e estilos personalizados */
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-8px); }
+        }
+        .animate-float {
+            animation: float 4s ease-in-out infinite;
+        }
+        .glass-card {
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .glass-dark {
+            background: rgba(15, 23, 42, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+        }
+        .sector-glow {
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 font-sans antialiased selection:bg-teal-500 selection:text-white">
+
+    <!-- ==================== CABEÇALHO & NAVEGAÇÃO FIXA ==================== -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-card border-b border-slate-200/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-20">
+                <!-- Logo GreenWay LogMobi -->
+                <a href="#" class="flex items-center gap-3 group">
+                    <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-teal-600 to-teal-400 flex items-center justify-center text-white shadow-lg shadow-teal-500/30 group-hover:scale-105 transition-transform">
+                        <i class="fa-solid fa-leaf text-xl"></i>
+                    </div>
+                    <div>
+                        <span class="font-extrabold text-xl tracking-tight text-slate-900">GreenWay <span class="text-teal-600">LogMobi</span></span>
+                        <span class="block text-[11px] font-medium text-slate-500 tracking-wider uppercase">Nova Lima • MG</span>
+                    </div>
+                </a>
+
+                <!-- Links de Navegação Desktop -->
+                <nav class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-600">
+                    <a href="#ecossistema" class="hover:text-teal-600 transition-colors">O Ecossistema</a>
+                    <a href="#rastreamento" class="hover:text-teal-600 transition-colors">Lockers & Rastreio</a>
+                    <a href="#setores" class="hover:text-teal-600 transition-colors">Hubs & Setores</a>
+                    <a href="#frota" class="hover:text-teal-600 transition-colors">Frota Multimodal</a>
+                    <a href="#esg-lgpd" class="hover:text-teal-600 transition-colors">ESG & LGPD</a>
+                </nav>
+
+                <!-- Botões de Ação -->
+                <div class="hidden sm:flex items-center gap-3">
+                    <a href="#rastreamento" onclick="switchTab('reversa')" class="px-4 py-2.5 rounded-xl text-sm font-semibold text-teal-700 bg-teal-50 hover:bg-teal-100 border border-teal-200 transition-all">
+                        <i class="fa-solid fa-rotate-left mr-1.5"></i> Logística Reversa
+                    </a>
+                    <a href="#rastreamento" onclick="switchTab('rastrear')" class="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-teal-600 hover:bg-teal-700 shadow-md shadow-teal-600/25 transition-all flex items-center gap-2">
+                        <i class="fa-solid fa-qrcode"></i> Rastrear Pacote
+                    </a>
+                </div>
+
+                <!-- Menu Mobile Toggle -->
+                <button id="mobile-menu-btn" class="lg:hidden p-2.5 rounded-xl text-slate-600 hover:bg-slate-100 focus:outline-none" aria-label="Abrir Menu">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Menu Mobile Dropdown -->
+        <div id="mobile-menu" class="hidden lg:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-6 space-y-2 shadow-xl">
+            <a href="#ecossistema" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700">O Ecossistema</a>
+            <a href="#rastreamento" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700">Lockers & Rastreio</a>
+            <a href="#setores" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700">Hubs & Setores</a>
+            <a href="#frota" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700">Frota Multimodal</a>
+            <a href="#esg-lgpd" class="block px-4 py-2.5 rounded-xl text-sm font-semibold text-slate-700 hover:bg-teal-50 hover:text-teal-700">ESG & LGPD</a>
+            <div class="pt-3 flex flex-col gap-2">
+                <a href="#rastreamento" onclick="switchTab('rastrear')" class="w-full text-center px-4 py-3 rounded-xl text-sm font-semibold text-white bg-teal-600">
+                    <i class="fa-solid fa-qrcode mr-2"></i> Rastrear Encomenda
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <!-- ==================== HERO SECTION ==================== -->
+    <section class="relative pt-32 pb-20 lg:pt-40 lg:pb-28 overflow-hidden bg-slate-900 text-white">
+        <!-- Elementos Decorativos de Fundo -->
+        <div class="absolute inset-0 overflow-hidden pointer-events-none">
+            <div class="absolute -top-24 -right-24 w-96 h-96 rounded-full bg-teal-500/20 blur-3xl"></div>
+            <div class="absolute top-1/2 -left-24 w-80 h-80 rounded-full bg-cyan-500/15 blur-3xl"></div>
+            <div class="absolute bottom-0 right-1/4 w-72 h-72 rounded-full bg-violet-500/10 blur-3xl"></div>
+            <!-- Grid pattern sutil -->
+            <div class="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNDAiIGhlaWdodD0iNDAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMjU1LDI1NSwyNTUsMC4wNSkiLz48L3N2Zz4=')]"></div>
+        </div>
+
+        <div class="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid lg:grid-cols-12 gap-12 items-center">
+                <!-- Coluna de Texto Principal -->
+                <div class="lg:col-span-7 space-y-6">
+                    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/15 border border-teal-400/30 text-teal-300 text-xs font-semibold tracking-wide uppercase">
+                        <span class="w-2 h-2 rounded-full bg-teal-400 animate-ping"></span>
+                        Piloto Nova Lima • Expansão BH, Raposos & Rio Acima
+                    </div>
+
+                    <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold tracking-tight leading-[1.12]">
+                        Logística Urbana Inteligente e <span class="text-transparent bg-clip-text bg-gradient-to-r from-teal-300 via-emerald-300 to-cyan-300">Emissão Zero</span> para Nova Lima
+                    </h1>
+
+                    <p class="text-lg sm:text-xl text-slate-300 leading-relaxed max-w-2xl">
+                        Um ecossistema híbrido que une e-commerce, lojistas locais e parceria estratégica com os <strong class="text-white font-semibold">Correios</strong> através de mini-hubs inteligentes (<em class="text-teal-300 not-italic">GreenWay Spots</em>), lockers digitais e transporte multimodal elétrico.
+                    </p>
+
+                    <!-- CTAs -->
+                    <div class="flex flex-wrap items-center gap-4 pt-2">
+                        <a href="#rastreamento" class="px-7 py-4 rounded-2xl bg-gradient-to-r from-teal-500 to-teal-600 hover:from-teal-400 hover:to-teal-500 text-white font-bold text-base shadow-lg shadow-teal-500/30 transition-all flex items-center gap-2.5">
+                            <i class="fa-solid fa-box-open"></i> Simular Rastreio & Locker
+                        </a>
+                        <a href="#setores" class="px-7 py-4 rounded-2xl bg-slate-800/80 hover:bg-slate-800 border border-slate-700 text-slate-200 font-semibold text-base transition-all flex items-center gap-2.5">
+                            <i class="fa-solid fa-map-location-dot text-teal-400"></i> Explorar Setores
+                        </a>
+                    </div>
+
+                    <!-- Indicadores-Chave (KPIs do Projeto) -->
+                    <div class="grid grid-cols-3 gap-4 pt-6 border-t border-slate-800">
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-teal-400">-30%</div>
+                            <div class="text-xs sm:text-sm text-slate-400 mt-0.5">Emissões de CO₂ na última milha</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-emerald-400">-90%</div>
+                            <div class="text-xs sm:text-sm text-slate-400 mt-0.5">Uso de papel com triagem digital</div>
+                        </div>
+                        <div>
+                            <div class="text-2xl sm:text-3xl font-extrabold text-cyan-400">100%</div>
+                            <div class="text-xs sm:text-sm text-slate-400 mt-0.5">Conformidade LGPD & Dados Seguros</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Coluna Visual / Cartão Interativo de Status da Rede -->
+                <div class="lg:col-span-5">
+                    <div class="relative bg-slate-800/70 backdrop-blur-xl border border-slate-700/80 rounded-3xl p-6 sm:p-8 shadow-2xl animate-float">
+                        <div class="flex items-center justify-between pb-5 border-b border-slate-700/80">
+                            <div class="flex items-center gap-3">
+                                <div class="w-10 h-10 rounded-xl bg-teal-500/20 text-teal-400 flex items-center justify-center">
+                                    <i class="fa-solid fa-network-wired text-lg"></i>
+                                </div>
+                                <div>
+                                    <h3 class="font-bold text-white text-sm">Rede Ativa • Nova Lima</h3>
+                                    <p class="text-xs text-slate-400">ID Global: Verde-água / Turquesa</p>
+                                </div>
+                            </div>
+                            <span class="px-2.5 py-1 rounded-full bg-emerald-500/20 text-emerald-300 text-xs font-mono font-semibold flex items-center gap-1.5">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-400"></span> ONLINE
+                            </span>
+                        </div>
+
+                        <!-- Mini Preview dos 4 Setores -->
+                        <div class="mt-5 space-y-3">
+                            <p class="text-xs font-semibold uppercase tracking-wider text-slate-400">Status dos GreenWay Spots por Setor</p>
+                            
+                            <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-slate-700/60">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-[#8B5CF6] shadow-sm shadow-violet-500"></span>
+                                    <div>
+                                        <div class="text-sm font-semibold text-white">Setor Norte</div>
+                                        <div class="text-[11px] text-slate-400">Vila da Serra / Vale do Sereno</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-violet-300 bg-violet-500/15 px-2.5 py-1 rounded-lg">94% Lockers Livres</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-slate-700/60">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-[#06B6D4] shadow-sm shadow-cyan-500"></span>
+                                    <div>
+                                        <div class="text-sm font-semibold text-white">Setor Centro</div>
+                                        <div class="text-[11px] text-slate-400">Hub Piloto • Apoio Correios</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-cyan-300 bg-cyan-500/15 px-2.5 py-1 rounded-lg">Alta Rotatividade</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-slate-700/60">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-[#84CC16] shadow-sm shadow-lime-500"></span>
+                                    <div>
+                                        <div class="text-sm font-semibold text-white">Setor Sul</div>
+                                        <div class="text-[11px] text-slate-400">Jardim Canadá / Condomínios</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-lime-300 bg-lime-500/15 px-2.5 py-1 rounded-lg">Drones & E-Bikes</span>
+                            </div>
+
+                            <div class="flex items-center justify-between p-3 rounded-2xl bg-slate-900/60 border border-slate-700/60">
+                                <div class="flex items-center gap-3">
+                                    <span class="w-3.5 h-3.5 rounded-full bg-[#F97316] shadow-sm shadow-orange-500"></span>
+                                    <div>
+                                        <div class="text-sm font-semibold text-white">Setor Leste</div>
+                                        <div class="text-[11px] text-slate-400">Corredor Raposos / Rio Acima</div>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-mono text-orange-300 bg-orange-500/15 px-2.5 py-1 rounded-lg">Expansão Regional</span>
+                            </div>
+                        </div>
+
+                        <div class="mt-5 pt-4 border-t border-slate-700/80 flex items-center justify-between text-xs text-slate-400">
+                            <span><i class="fa-solid fa-solar-panel text-amber-400 mr-1.5"></i> Energia Solar Ativa</span>
+                            <span><i class="fa-solid fa-shield-halved text-teal-400 mr-1.5"></i> LGPD Criptografada</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ==================== O ECOSSISTEMA & PARCERIA CORREIOS ==================== -->
+    <section id="ecossistema" class="py-20 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-3xl mx-auto mb-16">
+                <span class="text-teal-600 font-bold text-xs uppercase tracking-widest">Modelo Híbrido & Colaborativo</span>
+                <h2 class="mt-2 text-3xl sm:text-4xl font-extrabold text-slate-900">Uma Parceria de Alívio, Não de Concorrência</h2>
+                <p class="mt-4 text-slate-600 text-base sm:text-lg leading-relaxed">
+                    O GreenWay LogMobi atua como infraestrutura intermediária descentralizada: recebe, organiza e distribui mercadorias de e-commerce, pequenos lojistas e <strong class="text-slate-800">Correios</strong>, eliminando filas nas agências centrais e reduzindo caminhões pesados nos bairros.
+                </p>
+            </div>
+
+            <!-- 3 Pilares de Valor -->
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Card 1 -->
+                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 hover:border-teal-300 hover:shadow-xl hover:shadow-teal-900/5 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-teal-100 text-teal-700 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-handshake-angle"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Apoio Estratégico aos Correios</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Os <em>GreenWay Spots</em> funcionam como extensões avançadas nos bairros. Absorvem triagem inicial, postagem simplificada e retirada rápida via QR Code, desafogando agências tradicionais.
+                    </p>
+                    <ul class="space-y-2 text-xs font-medium text-slate-700">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Menos filas para moradores</li>
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-teal-600"></i> Redução de custos operacionais</li>
+                    </ul>
+                </div>
+
+                <!-- Card 2 -->
+                <div class="p-8 rounded-3xl bg-slate-50 border border-slate-200/80 hover:border-teal-300 hover:shadow-xl hover:shadow-teal-900/5 transition-all">
+                    <div class="w-14 h-14 rounded-2xl bg-cyan-100 text-cyan-700 flex items-center justify-center text-2xl mb-6">
+                        <i class="fa-solid fa-store"></i>
+                    </div>
+                    <h3 class="text-xl font-bold text-slate-900 mb-3">Impulso ao Comércio Local</h3>
+                    <p class="text-slate-600 text-sm leading-relaxed mb-4">
+                        Pequenas e médias empresas de Nova Lima utilizam nossa rede para envios locais no mesmo dia (<em>same-day delivery</em>) com embalagens recicláveis e tarifas acessíveis.
+                    </p>
+                    <ul class="space-y-2 text-xs font-medium text-slate-700">
+                        <li class="flex items-center gap-2"><i class="fa-solid fa-check text-cyan-600"></i> Ponto de coleta próximo (mercados e farmácias)</li>
+                        <li clas
