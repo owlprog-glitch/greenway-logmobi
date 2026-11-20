@@ -864,6 +864,270 @@
                 </div>
             </div>
 
+            <!-- ==================== MÓDULO DEDICADO: SIMULAÇÃO DE VOOS CURTOS — OPERAÇÃO DRONE LAST MILE ==================== -->
+            <div id="drone-short-flight-module" class="bg-slate-950 text-white rounded-3xl p-6 sm:p-10 border border-cyan-500/30 shadow-2xl mb-16 relative overflow-hidden">
+                <!-- Brilho decorativo de fundo -->
+                <div class="absolute -top-24 -right-24 w-80 h-80 rounded-full bg-cyan-500/10 blur-3xl pointer-events-none"></div>
+                <div class="absolute -bottom-24 -left-24 w-80 h-80 rounded-full bg-teal-500/10 blur-3xl pointer-events-none"></div>
+
+                <!-- Cabeçalho do Módulo Drone -->
+                <div class="relative z-10 flex flex-col lg:flex-row lg:items-center justify-between gap-4 pb-6 border-b border-slate-800">
+                    <div>
+                        <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyan-500/15 border border-cyan-400/30 text-cyan-300 text-xs font-bold mb-2">
+                            <i class="fa-solid fa-helicopter"></i> Operação Aérea Last Mile • Apenas Drones (Voos Curtos)
+                        </div>
+                        <h3 class="text-2xl sm:text-3xl font-extrabold text-white">
+                            Simulação de Voos Curtos — Operação Drone Last Mile
+                        </h3>
+                        <p class="text-sm text-slate-400 mt-1 max-w-3xl">
+                            Entregas rápidas de pacotes leves em locais de difícil acesso em Nova Lima, programadas para voos curtos com mapas de entregas, telemetria IoT/GPS e cumprimento rigoroso das restrições legais de voo (ANAC/DECEA).
+                        </p>
+                    </div>
+
+                    <!-- Controles de Execução da Missão -->
+                    <div class="flex flex-wrap items-center gap-2.5 shrink-0">
+                        <button id="btn-drone-start" onclick="startDroneFlight()" class="px-5 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-slate-950 font-extrabold text-xs shadow-lg shadow-cyan-500/25 transition-all flex items-center gap-2">
+                            <i class="fa-solid fa-play"></i> Iniciar Voo Curto
+                        </button>
+                        <button id="btn-drone-pause" onclick="pauseDroneFlight()" class="px-4 py-2.5 rounded-xl bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-200 font-bold text-xs transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-pause"></i> Pausar
+                        </button>
+                        <button id="btn-drone-reset" onclick="resetDroneFlight()" class="px-4 py-2.5 rounded-xl bg-slate-900 hover:bg-slate-800 border border-slate-700 text-slate-300 font-bold text-xs transition-all flex items-center gap-1.5">
+                            <i class="fa-solid fa-rotate-right"></i> Resetar
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Seletor de Cenários de Voo Curto por Distrito -->
+                <div class="relative z-10 pt-6">
+                    <span class="block text-[11px] font-bold uppercase tracking-wider text-slate-400 mb-3">
+                        1. Selecione o Cenário de Voo Curto em Nova Lima (Sub-hub → Destino)
+                    </span>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-3">
+                        <button onclick="selectDroneScenario('centro')" id="drone-scen-centro" class="drone-scen-btn p-4 rounded-2xl border-2 border-[#06B6D4] bg-cyan-500/10 text-left transition-all">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#06B6D4]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#06B6D4]"></span> Centro • Ciano
+                                </span>
+                                <span class="text-[11px] font-mono text-slate-400">2,4 km</span>
+                            </div>
+                            <div class="text-xs font-bold text-white">Sub-hub Centro → Encosta / Condomínio Difícil Acesso</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Carga leve: 1,4 kg • Relevo íngreme</div>
+                        </button>
+
+                        <button onclick="selectDroneScenario('sul')" id="drone-scen-sul" class="drone-scen-btn p-4 rounded-2xl border-2 border-slate-800 bg-slate-900/80 hover:border-[#84CC16] text-left transition-all">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#84CC16]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#84CC16]"></span> Sul • Verde-Limão
+                                </span>
+                                <span class="text-[11px] font-mono text-slate-400">3,1 km</span>
+                            </div>
+                            <div class="text-xs font-bold text-white">Sub-hub Sul → Ponto de Entrega Rápida</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Carga leve: 1,8 kg • Jardim Canadá</div>
+                        </button>
+
+                        <button onclick="selectDroneScenario('leste')" id="drone-scen-leste" class="drone-scen-btn p-4 rounded-2xl border-2 border-slate-800 bg-slate-900/80 hover:border-[#F97316] text-left transition-all">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#F97316]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#F97316]"></span> Leste • Laranja
+                                </span>
+                                <span class="text-[11px] font-mono text-slate-400">2,8 km</span>
+                            </div>
+                            <div class="text-xs font-bold text-white">Sub-hub Leste → Área Residencial Relevo Acentuado</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Carga leve: 1,1 kg • Acesso restrito</div>
+                        </button>
+
+                        <button onclick="selectDroneScenario('norte')" id="drone-scen-norte" class="drone-scen-btn p-4 rounded-2xl border-2 border-slate-800 bg-slate-900/80 hover:border-[#8B5CF6] text-left transition-all">
+                            <div class="flex items-center justify-between mb-1.5">
+                                <span class="inline-flex items-center gap-1.5 text-[11px] font-extrabold uppercase text-[#8B5CF6]">
+                                    <span class="w-2.5 h-2.5 rounded-full bg-[#8B5CF6]"></span> Norte • Violeta
+                                </span>
+                                <span class="text-[11px] font-mono text-slate-400">1,9 km</span>
+                            </div>
+                            <div class="text-xs font-bold text-white">Sub-hub Norte → Entrega Leve Expressa</div>
+                            <div class="text-[11px] text-slate-400 mt-1">Carga leve: 0,9 kg • Vila da Serra</div>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Grid Principal: Pré-Voo + Radar de Telemetria + Log da Missão -->
+                <div class="relative z-10 grid lg:grid-cols-12 gap-6 pt-8 items-stretch">
+                    
+                    <!-- Coluna Esquerda (4 cols): Painel de Pré-Voo e Restrições Legais ANAC/DECEA -->
+                    <div class="lg:col-span-4 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                        <div class="space-y-3">
+                            <div class="flex items-center justify-between">
+                                <h4 class="text-xs font-extrabold uppercase tracking-wider text-cyan-300 flex items-center gap-2">
+                                    <i class="fa-solid fa-clipboard-list"></i> 2. Pré-Voo & Regras Legais
+                                </h4>
+                                <span class="px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold">
+                                    ANAC / DECEA OK
+                                </span>
+                            </div>
+
+                            <div class="space-y-2 text-xs">
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-slate-400"><i class="fa-solid fa-weight-hanging text-teal-400 mr-1.5"></i> Peso Pacote (Máx. 2,5 kg)</span>
+                                    <strong id="drone-pre-weight" class="font-mono text-emerald-300">1,4 kg • APROVADO</strong>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-slate-400"><i class="fa-solid fa-ruler-horizontal text-cyan-400 mr-1.5"></i> Distância Programada</span>
+                                    <strong id="drone-pre-dist" class="font-mono text-white">2,4 km (Voo Curto)</strong>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-slate-400"><i class="fa-solid fa-cloud-sun text-amber-400 mr-1.5"></i> Janela Meteorológica</span>
+                                    <strong id="drone-pre-weather" class="font-mono text-emerald-300">Vento 9 km/h • Limpo</strong>
+                                </div>
+                                <div class="p-3 rounded-xl bg-slate-950/80 border border-slate-800 flex items-center justify-between">
+                                    <span class="text-slate-400"><i class="fa-solid fa-route text-violet-400 mr-1.5"></i> Corredor Aéreo</span>
+                                    <strong id="drone-pre-corridor" class="font-mono text-cyan-300">CORR-NL-C01 (Alt. 65m)</strong>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="p-3.5 rounded-xl bg-cyan-950/30 border border-cyan-500/25 text-[11px] text-slate-300 space-y-1.5">
+                            <div class="font-bold text-cyan-300 flex items-center gap-1.5">
+                                <i class="fa-solid fa-shield-halved"></i> Restrições Legais de Voo Verificadas
+                            </div>
+                            <p id="drone-legal-summary" class="text-slate-400 leading-relaxed">
+                                Espaço aéreo livre (DECEA/SARPAS), afastamento regulamentar de helipontos/aeroportos e exclusão de zonas restritas ou aglomerações urbanas.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Coluna Central (5 cols): Mapa Vetorial / Radar Interativo de Telemetria -->
+                    <div class="lg:col-span-5 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between space-y-4">
+                        <div class="flex items-center justify-between gap-2">
+                            <h4 class="text-xs font-extrabold uppercase tracking-wider text-teal-300 flex items-center gap-2">
+                                <i class="fa-solid fa-radar"></i> 3. Radar & Telemetria em Tempo Real
+                            </h4>
+                            <span id="drone-flight-status-pill" class="px-2.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 text-[10px] font-mono font-bold">
+                                PRONTO PARA DECOLAR
+                            </span>
+                        </div>
+
+                        <!-- Mapa / Radar SVG Animado -->
+                        <div class="relative rounded-2xl bg-slate-950 border border-slate-800 p-3 overflow-hidden">
+                            <svg id="drone-radar-svg" viewBox="0 0 420 200" class="w-full h-48">
+                                <defs>
+                                    <pattern id="droneRadarGrid" width="24" height="24" patternUnits="userSpaceOnUse">
+                                        <path d="M 24 0 L 0 0 0 24" fill="none" stroke="#1e293b" stroke-width="0.7"/>
+                                    </pattern>
+                                </defs>
+                                <rect width="420" height="200" fill="url(#droneRadarGrid)" rx="10"/>
+
+                                <!-- Anéis de alcance radar -->
+                                <circle cx="60" cy="145" r="75" fill="none" stroke="#0f172a" stroke-width="1.5"/>
+                                <circle cx="60" cy="145" r="135" fill="none" stroke="#1e293b" stroke-width="1" stroke-dasharray="4,4"/>
+
+                                <!-- Zona Restrita (No-Fly Zone DECEA/Heliponto) -->
+                                <g>
+                                    <circle cx="215" cy="145" r="28" fill="rgba(239, 68, 68, 0.12)" stroke="#ef4444" stroke-width="1.2" stroke-dasharray="3,3"/>
+                                    <text x="215" y="143" text-anchor="middle" fill="#f87171" font-size="7.5" font-family="JetBrains Mono, monospace" font-weight="bold">ZONA RESTRITA</text>
+                                    <text x="215" y="153" text-anchor="middle" fill="#fca5a5" font-size="6.5" font-family="Inter, sans-serif">Desvio Seguro</text>
+                                </g>
+
+                                <!-- Corredor Verde Autorizado (fundo translúcido) -->
+                                <path id="drone-corridor-bg" d="M 60 145 Q 210 30 360 75" fill="none" stroke="rgba(6, 182, 212, 0.18)" stroke-width="16" stroke-linecap="round"/>
+                                
+                                <!-- Linha Planejada Tracejada -->
+                                <path id="drone-planned-path" d="M 60 145 Q 210 30 360 75" fill="none" stroke="#334155" stroke-width="2.5" stroke-dasharray="5,5"/>
+
+                                <!-- Linha Percorrida Dinâmica -->
+                                <path id="drone-progress-path" d="M 60 145 Q 210 30 360 75" fill="none" stroke="#06B6D4" stroke-width="3.5" stroke-linecap="round" stroke-dasharray="340" stroke-dashoffset="340"/>
+
+                                <!-- Ponto Origem: Sub-hub -->
+                                <g>
+                                    <circle cx="60" cy="145" r="9" fill="#0f172a" stroke="#14b8a6" stroke-width="3"/>
+                                    <text id="drone-svg-origin" x="60" y="168" text-anchor="middle" fill="#cbd5e1" font-size="8.5" font-family="Inter, sans-serif" font-weight="bold">Sub-hub Centro</text>
+                                    <text x="60" y="179" text-anchor="middle" fill="#5eead4" font-size="7" font-family="JetBrains Mono, monospace">Base Solar</text>
+                                </g>
+
+                                <!-- Waypoint Corredor Seguro -->
+                                <g>
+                                    <circle cx="210" cy="60" r="4.5" fill="#38bdf8"/>
+                                    <text x="210" y="46" text-anchor="middle" fill="#7dd3fc" font-size="7.5" font-family="JetBrains Mono, monospace">Corredor Verde</text>
+                                </g>
+
+                                <!-- Ponto Destino -->
+                                <g>
+                                    <circle cx="360" cy="75" r="9" fill="#10b981" stroke="#ecfdf5" stroke-width="2"/>
+                                    <text id="drone-svg-dest" x="360" y="98" text-anchor="middle" fill="#f8fafc" font-size="8.5" font-family="Inter, sans-serif" font-weight="bold">Encosta / Cond.</text>
+                                    <text x="360" y="109" text-anchor="middle" fill="#6ee7b7" font-size="7" font-family="JetBrains Mono, monospace">Ponto Pouso</text>
+                                </g>
+
+                                <!-- Aeronave Drone Animada -->
+                                <g id="drone-aircraft-marker" transform="translate(60, 145)">
+                                    <circle r="13" fill="rgba(6, 182, 212, 0.25)"/>
+                                    <circle r="7" fill="#06B6D4" stroke="#ffffff" stroke-width="2"/>
+                                    <!-- Hélices esquemáticas -->
+                                    <line x1="-10" y1="-10" x2="10" y2="10" stroke="#e2e8f0" stroke-width="1.5"/>
+                                    <line x1="10" y1="-10" x2="-10" y2="10" stroke="#e2e8f0" stroke-width="1.5"/>
+                                </g>
+                            </svg>
+
+                            <!-- Barra de Progresso do Voo -->
+                            <div class="mt-2 flex items-center justify-between text-[11px] font-mono text-slate-400">
+                                <span>Progresso da Missão</span>
+                                <span id="drone-progress-pct" class="text-cyan-300 font-bold">0%</span>
+                            </div>
+                            <div class="w-full h-1.5 bg-slate-800 rounded-full overflow-hidden mt-1">
+                                <div id="drone-progress-bar" class="h-full bg-gradient-to-r from-cyan-400 to-emerald-400 transition-all duration-150" style="width: 0%"></div>
+                            </div>
+                        </div>
+
+                        <!-- Grid de 6 Métricas de Telemetria em Tempo Real -->
+                        <div class="grid grid-cols-3 gap-2.5 text-center">
+                            <div class="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">Altitude</span>
+                                <span id="tel-altitude" class="text-sm font-mono font-extrabold text-white">0 m</span>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">Velocidade</span>
+                                <span id="tel-speed" class="text-sm font-mono font-extrabold text-cyan-300">0 km/h</span>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">Bateria Solar</span>
+                                <span id="tel-battery" class="text-sm font-mono font-extrabold text-emerald-400">98%</span>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">Dist. Restante</span>
+                                <span id="tel-distance" class="text-sm font-mono font-extrabold text-white">2,40 km</span>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">Link IoT / GPS</span>
+                                <span id="tel-link" class="text-xs font-mono font-extrabold text-teal-300">5G RTK • 99%</span>
+                            </div>
+                            <div class="p-2.5 rounded-xl bg-slate-950/90 border border-slate-800">
+                                <span class="text-[10px] text-slate-400 block">CO₂ Evitado</span>
+                                <span id="tel-co2" class="text-sm font-mono font-extrabold text-emerald-300">-420 g</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Coluna Direita (3 cols): Log de Eventos da Missão em Tempo Real -->
+                    <div class="lg:col-span-3 bg-slate-900/90 border border-slate-800 rounded-2xl p-5 flex flex-col justify-between">
+                        <div>
+                            <div class="flex items-center justify-between mb-3">
+                                <h4 class="text-xs font-extrabold uppercase tracking-wider text-emerald-300 flex items-center gap-2">
+                                    <i class="fa-solid fa-terminal"></i> 4. Log da Missão
+                                </h4>
+                                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                            </div>
+                            <div id="drone-mission-log" class="space-y-2.5 max-h-72 overflow-y-auto pr-1 text-[11px] font-mono">
+                                <!-- Preenchido via JS -->
+                            </div>
+                        </div>
+
+                        <div class="mt-4 pt-3 border-t border-slate-800 text-[11px] text-slate-400 flex items-center justify-between">
+                            <span>Recarga pós-voo:</span>
+                            <span class="text-amber-300 font-semibold"><i class="fa-solid fa-solar-panel mr-1"></i> Estação Solar Hub</span>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
             <!-- Fluxo Operacional Integrado (ERP + WMS + PEPS) -->
             <div class="bg-white rounded-3xl p-8 sm:p-10 border border-slate-200 shadow-sm">
                 <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 mb-8 pb-6 border-b border-slate-100">
@@ -1341,6 +1605,74 @@
         // Inicializa com o primeiro exemplo
         renderTracking(trackingDatabase['GW-NL-2026']);
 
+        // 2a. Dados dos Setores (declarado antes das simulações que dependem das cores/nomes dos setores)
+        const sectorsData = {
+            norte: {
+                color: '#8B5CF6',
+                textColor: '#ffffff',
+                badge: 'Setor Norte • Violeta',
+                status: 'Hub Conectado • Alta Densidade Residencial',
+                title: 'GreenWay Spot Norte • Vila da Serra & Vale do Sereno',
+                desc: 'Atende áreas verticalizadas e polos comerciais do norte de Nova Lima, integrando entregas de e-commerce em lockers condominiais e hubs de conveniência com frota 100% elétrica.',
+                volume: '~380 pct/dia',
+                lockers: '140 Gavetas IoT',
+                charging: '8 Pontos Solar',
+                features: [
+                    'Redução drástica de vans e caminhões estacionados em vias locais.',
+                    'Integração com Correios para retirada expressa 24h via QR Code.',
+                    'Abastecido por Vans Elétricas a partir do CD Central.'
+                ]
+            },
+            sul: {
+                color: '#84CC16',
+                textColor: '#0f172a',
+                badge: 'Setor Sul • Verde-Limão',
+                status: 'Operação Multimodal • Drones & E-Bikes',
+                title: 'GreenWay Spot Sul • Jardim Canadá & Condomínios',
+                desc: 'Região estratégica que combina polo comercial, oficinas e condomínios horizontais. Utiliza drones para pacotes leves de longo alcance e bicicletas elétricas para rotas internas.',
+                volume: '~310 pct/dia',
+                lockers: '96 Gavetas IoT',
+                charging: '6 Pontos Solar',
+                features: [
+                    'Plataforma homologada para decolagem de drones de entregas leves.',
+                    'Apoio logístico para pequenos produtores e lojistas do Jardim Canadá.',
+                    'Coleta programada de logística reversa e embalagens reutilizáveis.'
+                ]
+            },
+            centro: {
+                color: '#06B6D4',
+                textColor: '#0f172a',
+                badge: 'Setor Centro • Ciano',
+                status: 'Unidade Piloto Operacional',
+                title: 'GreenWay Spot Centro • Apoio Integrado Correios',
+                desc: 'Localizado em corredor de médio-alto fluxo próximo a supermercados, farmácias e centro comercial de Nova Lima. Absorve diretamente o excedente de encomendas da agência central dos Correios.',
+                volume: '~450 pct/dia',
+                lockers: '120 Gavetas IoT',
+                charging: '6 Pontos Solar',
+                features: [
+                    'Integração direta com Correios para triagem e retirada rápida.',
+                    'Entregas last mile realizadas 100% por bicicletas elétricas.',
+                    'Ponto de coleta para pequenos comerciantes do bairro.'
+                ]
+            },
+            leste: {
+                color: '#F97316',
+                textColor: '#ffffff',
+                badge: 'Setor Leste • Laranja',
+                status: 'Corredor de Expansão Regional',
+                title: 'GreenWay Spot Leste • Conexão Raposos & Rio Acima',
+                desc: 'Hub estratégico posicionado no eixo leste de Nova Lima, estruturando a ponte logística sustentável para integração futura com os municípios vizinhos de Raposos e Rio Acima.',
+                volume: '~220 pct/dia',
+                lockers: '80 Gavetas IoT',
+                charging: '4 Pontos Solar',
+                features: [
+                    'Sistema postal integrado permitindo envio de pacotes entre moradores.',
+                    'Roteirização inteligente para comunidades e áreas de difícil acesso.',
+                    'Base avançada para expansão metropolitana sustentável.'
+                ]
+            }
+        };
+
         // 2b. Frota Multimodal: Seleção de Card e Simulador de Rotas com IA
         const fleetModalMap = {
             caminhao: {
@@ -1465,6 +1797,251 @@
 
         updateRouteSimulation();
 
+        // 2b-extra. Simulador Exclusivo de Voos Curtos — Operação Drone Last Mile
+        const droneScenariosData = {
+            centro: {
+                sectorName: 'Setor Centro',
+                color: '#06B6D4',
+                originLabel: 'Sub-hub Centro',
+                destLabel: 'Encosta / Cond.',
+                weight: '1,4 kg • APROVADO',
+                distanceKm: 2.4,
+                weather: 'Vento 9 km/h • Limpo',
+                corridor: 'CORR-NL-C01 (Alt. 65m)',
+                cruiseAlt: 65,
+                cruiseSpeed: 54,
+                co2Saved: '-420 g',
+                legalSummary: 'Espaço aéreo livre (DECEA/SARPAS), afastamento regulamentar de helipontos e desvio automático de áreas restritas no Setor Centro.'
+            },
+            sul: {
+                sectorName: 'Setor Sul',
+                color: '#84CC16',
+                originLabel: 'Sub-hub Sul',
+                destLabel: 'Entrega Rápida',
+                weight: '1,8 kg • APROVADO',
+                distanceKm: 3.1,
+                weather: 'Vento 11 km/h • Limpo',
+                corridor: 'CORR-NL-S02 (Alt. 75m)',
+                cruiseAlt: 75,
+                cruiseSpeed: 58,
+                co2Saved: '-540 g',
+                legalSummary: 'Corredor verde homologado sobre o Jardim Canadá (Setor Sul), respeitando teto máximo operacional e zonas residenciais.'
+            },
+            leste: {
+                sectorName: 'Setor Leste',
+                color: '#F97316',
+                originLabel: 'Sub-hub Leste',
+                destLabel: 'Relevo Acentuado',
+                weight: '1,1 kg • APROVADO',
+                distanceKm: 2.8,
+                weather: 'Vento 12 km/h • Estável',
+                corridor: 'CORR-NL-L04 (Alt. 80m)',
+                cruiseAlt: 80,
+                cruiseSpeed: 52,
+                co2Saved: '-490 g',
+                legalSummary: 'Rota aérea curta para área residencial de relevo acentuado no Setor Leste, eliminando trajeto terrestre sinuoso.'
+            },
+            norte: {
+                sectorName: 'Setor Norte',
+                color: '#8B5CF6',
+                originLabel: 'Sub-hub Norte',
+                destLabel: 'Leve Expressa',
+                weight: '0,9 kg • APROVADO',
+                distanceKm: 1.9,
+                weather: 'Vento 8 km/h • Limpo',
+                corridor: 'CORR-NL-N03 (Alt. 60m)',
+                cruiseAlt: 60,
+                cruiseSpeed: 50,
+                co2Saved: '-330 g',
+                legalSummary: 'Voo curto expresso no Setor Norte (Vila da Serra) com corredor exclusivo de baixa altitude e pouso assistido por sensores IoT.'
+            }
+        };
+
+        let activeDroneScenarioKey = 'centro';
+        let droneProgress = 0; // 0 a 100
+        let droneTimer = null;
+        let droneMilestonesLogged = {};
+
+        function appendDroneLog(timeTag, message, tone = 'slate') {
+            const logBox = document.getElementById('drone-mission-log');
+            if (!logBox) return;
+            const toneColors = {
+                teal: 'border-teal-500/40 bg-teal-950/30 text-teal-200',
+                cyan: 'border-cyan-500/40 bg-cyan-950/30 text-cyan-200',
+                emerald: 'border-emerald-500/40 bg-emerald-950/40 text-emerald-200',
+                amber: 'border-amber-500/40 bg-amber-950/30 text-amber-200',
+                slate: 'border-slate-800 bg-slate-950/80 text-slate-300'
+            };
+            const item = document.createElement('div');
+            item.className = `p-2.5 rounded-xl border ${toneColors[tone] || toneColors.slate}`;
+            item.innerHTML = `<span class="text-[10px] opacity-75 block">[${timeTag}]</span><span>${message}</span>`;
+            logBox.prepend(item);
+        }
+
+        function getQuadraticPoint(t, p0, p1, p2) {
+            const inv = 1 - t;
+            const x = inv * inv * p0.x + 2 * inv * t * p1.x + t * t * p2.x;
+            const y = inv * inv * p0.y + 2 * inv * t * p1.y + t * t * p2.y;
+            return { x, y };
+        }
+
+        function renderDroneTelemetry() {
+            const sc = droneScenariosData[activeDroneScenarioKey];
+            const t = droneProgress / 100;
+
+            // Atualiza posição da aeronave no arco quadrático (60,145) -> (210,30) -> (360,75)
+            const pos = getQuadraticPoint(t, { x: 60, y: 145 }, { x: 210, y: 30 }, { x: 360, y: 75 });
+            const marker = document.getElementById('drone-aircraft-marker');
+            if (marker) {
+                marker.setAttribute('transform', `translate(${pos.x.toFixed(1)}, ${pos.y.toFixed(1)})`);
+            }
+
+            // Atualiza traço de progresso no SVG (comprimento aproximado 340)
+            const totalLen = 340;
+            const progressPath = document.getElementById('drone-progress-path');
+            if (progressPath) {
+                progressPath.style.strokeDashoffset = (totalLen * (1 - t)).toFixed(1);
+                progressPath.setAttribute('stroke', sc.color);
+            }
+
+            // Barra e percentual
+            document.getElementById('drone-progress-pct').textContent = `${Math.round(droneProgress)}%`;
+            document.getElementById('drone-progress-bar').style.width = `${droneProgress}%`;
+
+            // Cálculo dinâmico de altitude, velocidade, bateria e distância restante
+            let alt = 0;
+            let spd = 0;
+            if (droneProgress > 0 && droneProgress < 100) {
+                if (droneProgress < 15) {
+                    alt = Math.round((droneProgress / 15) * sc.cruiseAlt);
+                    spd = Math.round((droneProgress / 15) * sc.cruiseSpeed);
+                } else if (droneProgress > 85) {
+                    alt = Math.round(((100 - droneProgress) / 15) * sc.cruiseAlt);
+                    spd = Math.round(((100 - droneProgress) / 15) * sc.cruiseSpeed);
+                } else {
+                    alt = sc.cruiseAlt;
+                    spd = sc.cruiseSpeed;
+                }
+            }
+
+            const battery = Math.max(82, Math.round(98 - t * 11));
+            const remDist = (sc.distanceKm * (1 - t)).toFixed(2);
+
+            document.getElementById('tel-altitude').textContent = `${alt} m`;
+            document.getElementById('tel-speed').textContent = `${spd} km/h`;
+            document.getElementById('tel-battery').textContent = `${battery}%`;
+            document.getElementById('tel-distance').textContent = `${remDist.replace('.', ',')} km`;
+            document.getElementById('tel-co2').textContent = sc.co2Saved;
+        }
+
+        function selectDroneScenario(key) {
+            pauseDroneFlight();
+            activeDroneScenarioKey = key;
+            const sc = droneScenariosData[key];
+
+            // Atualiza estilo dos botões de cenário
+            document.querySelectorAll('.drone-scen-btn').forEach(btn => {
+                btn.style.borderColor = '#1e293b';
+                btn.style.backgroundColor = 'rgba(15, 23, 42, 0.8)';
+            });
+            const activeBtn = document.getElementById('drone-scen-' + key);
+            if (activeBtn) {
+                activeBtn.style.borderColor = sc.color;
+                activeBtn.style.backgroundColor = sc.color + '18';
+            }
+
+            // Atualiza painel de pré-voo e regras legais
+            document.getElementById('drone-pre-weight').textContent = sc.weight;
+            document.getElementById('drone-pre-dist').textContent = `${sc.distanceKm.toFixed(1).replace('.', ',')} km (Voo Curto)`;
+            document.getElementById('drone-pre-weather').textContent = sc.weather;
+            document.getElementById('drone-pre-corridor').textContent = sc.corridor;
+            document.getElementById('drone-legal-summary').textContent = sc.legalSummary;
+
+            // Atualiza rótulos do SVG
+            document.getElementById('drone-svg-origin').textContent = sc.originLabel;
+            document.getElementById('drone-svg-dest').textContent = sc.destLabel;
+            document.getElementById('drone-corridor-bg').setAttribute('stroke', sc.color + '30');
+
+            resetDroneFlight();
+        }
+
+        function startDroneFlight() {
+            if (droneTimer) return;
+            const sc = droneScenariosData[activeDroneScenarioKey];
+
+            if (droneProgress >= 100) {
+                droneProgress = 0;
+                droneMilestonesLogged = {};
+                document.getElementById('drone-mission-log').innerHTML = '';
+            }
+
+            const statusPill = document.getElementById('drone-flight-status-pill');
+            statusPill.textContent = 'EM VOO • TELEMETRIA ATIVA';
+            statusPill.className = 'px-2.5 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 text-[10px] font-mono font-bold';
+
+            if (!droneMilestonesLogged.start) {
+                droneMilestonesLogged.start = true;
+                appendDroneLog('T+00:00', `Decolagem autorizada (${sc.originLabel}) • Corredor ${sc.corridor}.`, 'cyan');
+            }
+
+            droneTimer = setInterval(() => {
+                droneProgress = Math.min(100, droneProgress + 2);
+                renderDroneTelemetry();
+
+                if (droneProgress >= 20 && !droneMilestonesLogged.cruise) {
+                    droneMilestonesLogged.cruise = true;
+                    appendDroneLog('T+01:15', `Altitude de cruzeiro (${sc.cruiseAlt}m) atingida no corredor verde.`, 'teal');
+                }
+                if (droneProgress >= 55 && !droneMilestonesLogged.avoid) {
+                    droneMilestonesLogged.avoid = true;
+                    appendDroneLog('T+03:10', 'Desvio seguro de zona restrita DECEA concluído • Link 5G RTK estável.', 'slate');
+                }
+                if (droneProgress >= 85 && !droneMilestonesLogged.approach) {
+                    droneMilestonesLogged.approach = true;
+                    appendDroneLog('T+04:50', `Aproximação final em ${sc.destLabel} • Sensores de pouso ativos.`, 'amber');
+                }
+                if (droneProgress >= 100) {
+                    pauseDroneFlight();
+                    statusPill.textContent = 'ENTREGA CONCLUÍDA • RETORNO SOLAR';
+                    statusPill.className = 'px-2.5 py-0.5 rounded-full bg-teal-500/20 text-teal-300 text-[10px] font-mono font-bold';
+                    appendDroneLog('T+05:40', `Pacote entregue com QR Code confirmado! Retornando à base de recarga solar (${sc.originLabel}).`, 'emerald');
+                }
+            }, 140);
+        }
+
+        function pauseDroneFlight() {
+            if (droneTimer) {
+                clearInterval(droneTimer);
+                droneTimer = null;
+                if (droneProgress > 0 && droneProgress < 100) {
+                    const statusPill = document.getElementById('drone-flight-status-pill');
+                    statusPill.textContent = 'VOO PAUSADO (PAIRANDO)';
+                    statusPill.className = 'px-2.5 py-0.5 rounded-full bg-amber-500/20 text-amber-300 text-[10px] font-mono font-bold';
+                }
+            }
+        }
+
+        function resetDroneFlight() {
+            pauseDroneFlight();
+            droneProgress = 0;
+            droneMilestonesLogged = {};
+            const sc = droneScenariosData[activeDroneScenarioKey];
+
+            const statusPill = document.getElementById('drone-flight-status-pill');
+            statusPill.textContent = 'PRONTO PARA DECOLAR';
+            statusPill.className = 'px-2.5 py-0.5 rounded-full bg-slate-800 text-cyan-300 text-[10px] font-mono font-bold';
+
+            const logBox = document.getElementById('drone-mission-log');
+            if (logBox) {
+                logBox.innerHTML = '';
+                appendDroneLog('PRÉ-VOO', `Checklist pré-voo concluído (${sc.sectorName}) • Peso leve (${sc.weight.split(' •')[0]}) e restrições ANAC/DECEA validadas.`, 'teal');
+            }
+            renderDroneTelemetry();
+        }
+
+        // Inicializa o módulo de voos curtos com o cenário Centro
+        selectDroneScenario('centro');
+
         // 2c. Verificador Interativo de Conformidade LGPD & Prontuário Logístico
         const lgpdScenarios = {
             prontuario: {
@@ -1569,73 +2146,6 @@
         }
 
         // 3. Seletor Interativo de Setores (Cores Oficiais do Projeto)
-        const sectorsData = {
-            norte: {
-                color: '#8B5CF6',
-                textColor: '#ffffff',
-                badge: 'Setor Norte • Violeta',
-                status: 'Hub Conectado • Alta Densidade Residencial',
-                title: 'GreenWay Spot Norte • Vila da Serra & Vale do Sereno',
-                desc: 'Atende áreas verticalizadas e polos comerciais do norte de Nova Lima, integrando entregas de e-commerce em lockers condominiais e hubs de conveniência com frota 100% elétrica.',
-                volume: '~380 pct/dia',
-                lockers: '140 Gavetas IoT',
-                charging: '8 Pontos Solar',
-                features: [
-                    'Redução drástica de vans e caminhões estacionados em vias locais.',
-                    'Integração com Correios para retirada expressa 24h via QR Code.',
-                    'Abastecido por Vans Elétricas a partir do CD Central.'
-                ]
-            },
-            sul: {
-                color: '#84CC16',
-                textColor: '#0f172a',
-                badge: 'Setor Sul • Verde-Limão',
-                status: 'Operação Multimodal • Drones & E-Bikes',
-                title: 'GreenWay Spot Sul • Jardim Canadá & Condomínios',
-                desc: 'Região estratégica que combina polo comercial, oficinas e condomínios horizontais. Utiliza drones para pacotes leves de longo alcance e bicicletas elétricas para rotas internas.',
-                volume: '~310 pct/dia',
-                lockers: '96 Gavetas IoT',
-                charging: '6 Pontos Solar',
-                features: [
-                    'Plataforma homologada para decolagem de drones de entregas leves.',
-                    'Apoio logístico para pequenos produtores e lojistas do Jardim Canadá.',
-                    'Coleta programada de logística reversa e embalagens reutilizáveis.'
-                ]
-            },
-            centro: {
-                color: '#06B6D4',
-                textColor: '#0f172a',
-                badge: 'Setor Centro • Ciano',
-                status: 'Unidade Piloto Operacional',
-                title: 'GreenWay Spot Centro • Apoio Integrado Correios',
-                desc: 'Localizado em corredor de médio-alto fluxo próximo a supermercados, farmácias e centro comercial de Nova Lima. Absorve diretamente o excedente de encomendas da agência central dos Correios.',
-                volume: '~450 pct/dia',
-                lockers: '120 Gavetas IoT',
-                charging: '6 Pontos Solar',
-                features: [
-                    'Integração direta com Correios para triagem e retirada rápida.',
-                    'Entregas last mile realizadas 100% por bicicletas elétricas.',
-                    'Ponto de coleta para pequenos comerciantes do bairro.'
-                ]
-            },
-            leste: {
-                color: '#F97316',
-                textColor: '#ffffff',
-                badge: 'Setor Leste • Laranja',
-                status: 'Corredor de Expansão Regional',
-                title: 'GreenWay Spot Leste • Conexão Raposos & Rio Acima',
-                desc: 'Hub estratégico posicionado no eixo leste de Nova Lima, estruturando a ponte logística sustentável para integração futura com os municípios vizinhos de Raposos e Rio Acima.',
-                volume: '~220 pct/dia',
-                lockers: '80 Gavetas IoT',
-                charging: '4 Pontos Solar',
-                features: [
-                    'Sistema postal integrado permitindo envio de pacotes entre moradores.',
-                    'Roteirização inteligente para comunidades e áreas de difícil acesso.',
-                    'Base avançada para expansão metropolitana sustentável.'
-                ]
-            }
-        };
-
         function selectSector(key) {
             const s = sectorsData[key];
             
